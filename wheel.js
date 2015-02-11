@@ -41,11 +41,11 @@ d3.json(fileJSONdata, function(error, json) {
 
   var text = vis.selectAll("text").data(nodes);
   var textEnter = text.enter().append("text")
-//      .style("fill-opacity", 1) // 1 is visible; 0 is not visible
-      .style("fill-opacity", function(d) {
-			return x(d.dx) > .04 ? 1 : 0; // 1 is visible; 0 is not visible; If the wedge "width" is too small, don't display text
+      .style("fill-opacity", 1) // 1 is visible; 0 is not visible
+//      .style("fill-opacity", function(d) {
+//			return x(d.dx) > .04 ? 1 : 0; // 1 is visible; 0 is not visible; If the wedge "width" is too small, don't display text
 			// add this into the click function below as well.
-	  })
+//	  })
       .style("fill", function(d) { // White text for dark backgrounds; dark text for light backgrounds
         return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
       })
