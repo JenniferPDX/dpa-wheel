@@ -1,4 +1,5 @@
-
+// The data to be displayed during the mouse-over must be in a key:value pair 
+// where the key is "title" 
 function executeWheel(fileJSONdata, splitChar, width, myExponent) {
 
 var height = width,
