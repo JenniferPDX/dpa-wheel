@@ -8,6 +8,9 @@ var height = width,
     padding = 5,
     duration = 1000;
 
+// This div is for the mouse-over annotation
+var content = d3.select("#annotation"); // To display course titles on mouse hover
+    
 // should probably parameterize #vis and "img", or at least the former
 var div = d3.select("#vis");
 div.select("img").remove();
@@ -37,7 +40,10 @@ d3.json(fileJSONdata, function(error, json) {
       .attr("d", arc)
       .attr("fill-rule", "evenodd")
       .style("fill", colour)
-      .on("click", click);
+      .on("click", click)
+      .on("mouseover", mouseover) // This call is for the mouse-over annotation
+      .on("mouseout", mouseout);  // This call is for the mouse-over annotation
+
 
   var text = vis.selectAll("text").data(nodes);
   var textEnter = text.enter().append("text")
@@ -59,7 +65,10 @@ d3.json(fileJSONdata, function(error, json) {
             rotate = angle + (multiline ? -.5 : 0);
         return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
       })
-      .on("click", click);
+      .on("click", click)
+      .on("mouseover", mouseover) // This call is for the mouse-over annotation
+      .on("mouseout", mouseout);  // This call is for the mouse-over annotation
+
 	  
   // depth is a static attribute. A node at depth 2 is always at depth 2.    
   textEnter.append("tspan")
@@ -107,6 +116,22 @@ d3.json(fileJSONdata, function(error, json) {
         });
   }
   
+    // This function is for the mouse-over annotation. 
+    // The data must be in a key:value pair where the key is "title" 
+    //mouseover function which will send the values to the legend
+    function mouseover(d) {
+        content.append("p2") // JM: Use a separate styling from regular paragraphs
+        .attr("id", "annotate")
+        .text(d.title ? d.name + ": " + d.title : ' ')
+    }
+
+    // This function is for the mouse-over annotation 
+    //mouseout function which removes the values and replaces them with a blank space
+    function mouseout(d) {
+        content.html(' ');
+    }
+  
+
   function isParentOf(p, c) {
 	  if (p === c) return true;
 	  if (p.children) {
@@ -158,6 +183,8 @@ d3.json(fileJSONdata, function(error, json) {
 
 });
 }
+
+
 
 /*
 
