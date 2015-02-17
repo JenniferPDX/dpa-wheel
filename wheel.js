@@ -1,27 +1,39 @@
+// Set bHover to true in order to enable mouse-over functionality.
 // The data to be displayed during the mouse-over must be in a key:value pair 
 // where the key is "title" 
-function executeWheel(fileJSONdata, splitChar, width, myExponent) {
+function executeWheel(fileJSONdata, splitChar, width, myExponent, bHover) {
 
 var height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
     y = d3.scale.pow().exponent(myExponent).domain([0, 1]).range([0, radius]),
     padding = 5,
-    duration = 1000;
+    duration = 1000,
+    hoverText = "Hover over a course number to display its title.";
 
-// This div is for the mouse-over annotation
-var content = d3.select("#annotation"); // To display course titles on mouse hover
+if (bHover) {
+    // This div is to display course titles on mouse hover
+    var content = d3.select("body")
+        .append("div")
+        .attr("id", "annotation");
+
+    // Display default hover text    
+    content.append("p2")
+        .text(hoverText);
+    }
+
+var div = d3.select("body")
+    .append("div")
+    .attr("id", "vis");
     
-// should probably parameterize #vis and "img", or at least the former
-var div = d3.select("#vis");
-div.select("img").remove();
-
 var vis = div.append("svg")
     .attr("width", width + padding * 2)
     .attr("height", height + padding * 2)
   .append("g")
     .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
+/*  Viewer instructions. 
+ Would prefer that this be two lines, but don't know how to introduce a carriage return, and when I did two appends, the line spacing was too great. When I tried to fix line spacing in the CSS, my text went to left-aligned.  */
 div.append("p").text("Click on a label to zoom to that level. Click the center to zoom back one level.");
     
 var partition = d3.layout.partition()
@@ -119,19 +131,25 @@ d3.json(fileJSONdata, function(error, json) {
         });
   }
   
-    // This function is for the mouse-over annotation. 
+    // mouseover function which will send the values to the annotation box
     // The data must be in a key:value pair where the key is "title" 
-    //mouseover function which will send the values to the legend
+    // Where there is no title text, the default hoverText string is used instead
     function mouseover(d) {
-        content.append("p2") // JM: Use a separate styling from regular paragraphs
-        .attr("id", "annotate")
-        .text(d.title ? d.name + ": " + d.title : ' ')
+        if (content) {
+            content.html(' ');
+            content.append("p2") // JM: Use a separate styling from regular paragraphs
+                .text(d.title ? d.name + ": " + d.title : hoverText );
+        }
     }
 
-    // This function is for the mouse-over annotation 
     //mouseout function which removes the values and replaces them with a blank space
+    // This function is for the mouse-over annotation 
     function mouseout(d) {
-        content.html(' ');
+        if (content) {
+            content.html(' ');
+            content.append("p2")
+                .text( hoverText );
+        }
     }
   
 
@@ -186,8 +204,6 @@ d3.json(fileJSONdata, function(error, json) {
 
 });
 }
-
-
 
 /*
 
