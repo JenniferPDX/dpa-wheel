@@ -22,6 +22,8 @@ var vis = div.append("svg")
   .append("g")
     .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
+div.append("p").text("Click on a label to zoom to that level. Click the center to zoom back one level.");
+    
 var partition = d3.layout.partition()
     .sort(null)
     .value(function(d) { return 5.8 - d.depth; }); // what's this 5.8 all about? Changing to 1, 50... can't see any difference
