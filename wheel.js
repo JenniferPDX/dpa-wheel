@@ -164,17 +164,6 @@ d3.json(fileJSONdata, function(error, json) {
 	}
 
 	function colour(d) {
-	/*
-	  if (d.children) {
-		// There is a maximum of two children!
-		//var colours = d.children.map(colour),
-		//    a = d3.hsl(colours[0]),
-		//    b = d3.hsl(colours[1]);
-		// L*a*b* might be better here...
-		//return d3.hsl((a.h + b.h) / 2, a.s * 1.2, a.l / 1.2);
-		return "#e8d9c5";
-	  }
-	  */
 	  return d.colour || "#D9E0D9";
 	}
 
