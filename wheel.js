@@ -37,8 +37,11 @@ var vis = div.append("svg")
 div.append("p").text("Click on a label to zoom to that level. Click the center to zoom back one level.");
     
 var partition = d3.layout.partition()
-    .sort(null)
-    .value(function(d) { return 5.8 - d.depth; }); // what's this 5.8 all about? Changing to 1, 50... can't see any difference
+    .sort(null) // Somehow seems to mean that the JSON ordering is preserved
+    .value(function(d) { return d.size; }); // Ha! Changing this to d.size works. It sizes the wedge.
+    // Have to make sure all my data is correct before using this. 
+    // Have to try it out on Lindsay, and see which she likes better.
+//    .value(function(d) { return 5.8 - d.depth; }); // what's this 5.8 all about? Changing to 1, 50... can't see any difference
 
 var arc = d3.svg.arc()
     .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
