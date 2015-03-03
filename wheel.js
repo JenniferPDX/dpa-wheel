@@ -194,7 +194,7 @@ d3.json(fileJSONdata, function(error, json) {
 	  return rgb.r * .299 + rgb.g * .587 + rgb.b * .114;
 	}
 
-});
+}); // d3.json reading fileJSONdata
 }
 
 /*
