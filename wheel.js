@@ -7,7 +7,7 @@ var height = width,
     radius = width / 2,
     x = d3.scale.linear().range([0, 2 * Math.PI]),
     y = d3.scale.pow().exponent(myExponent).domain([0, 1]).range([0, radius]),
-    padding = 5,
+    padding = 5, // radial distance from inner radius, where text starts to draw
     duration = 1000,
     hoverText = "Hover over a course number to display its title.";
 
@@ -76,11 +76,16 @@ d3.json(fileJSONdata, function(error, json) {
       .attr("text-anchor", function(d) { // Text on the left side of the wheel needs to be right-aligned
         return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
       })
-      .attr("dy", ".2em")
+      // The dy adjustment is how to get the text vertically centered
+      .attr("dy", function(d) {
+          var multiline = (d.name || "").split(splitChar).length > 1;
+          return multiline ? "-.35em" : ".35em";
+      }) 
       .attr("transform", function(d) {
         var multiline = (d.name || "").split(splitChar).length > 1,
             angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
             rotate = angle + (multiline ? -.5 : 0);
+            
         return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
       })
       .on("click", click)
@@ -88,14 +93,15 @@ d3.json(fileJSONdata, function(error, json) {
       .on("mouseout", mouseout);  // This call is for the mouse-over annotation
 
 	  
-  // depth is a static attribute. A node at depth 2 is always at depth 2.    
+  // depth is a static attribute of the JSON data structure. A node at depth 2 is always at depth 2.    
   textEnter.append("tspan")
       .attr("x", 0)
       .text(function(d) { return d.depth ? d.name.split(splitChar)[0] : ""; });
 	  
   textEnter.append("tspan")
       .attr("x", 0)
-      .attr("dy", "1em")
+      .attr("dy", "1em") // Adjust this to adjust line spacing for multi-line nodes, but doing so 
+      // messes with the angle. Outer edges start pointing in to each other.
       .text(function(d) { return d.depth ? d.name.split(splitChar)[1] || "" : ""; });
 
   function click(d) {
