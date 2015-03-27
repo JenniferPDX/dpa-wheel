@@ -50,7 +50,7 @@ var arc = d3.svg.arc()
     .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
 d3.json(fileJSONdata, function(error, json) {
-  var nodes = partition.nodes({children: json});
+  var nodes = partition.nodes({children: json.children});
 
   var path = vis.selectAll("path").data(nodes);
   path.enter().append("path")
@@ -103,6 +103,8 @@ d3.json(fileJSONdata, function(error, json) {
       .attr("dy", "1em") // Adjust this to adjust line spacing for multi-line nodes, but doing so 
       // messes with the angle. Outer edges start pointing in to each other.
       .text(function(d) { return d.depth ? d.name.split(splitChar)[1] || "" : ""; });
+      
+      // TODO: Enable splitting for a 3rd line: Civic Leadership Minor
 
   function click(d) {
     path.transition()
