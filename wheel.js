@@ -25,12 +25,16 @@ if (bHover) {
 var div = d3.select("body")
     .append("div")
     .attr("id", "vis");
+
+    // Want to center the wheel in the window.
+    // TODO: Deal with resizing window events
+    var mycenter = window.innerWidth / 2;
     
 var vis = div.append("svg")
-    .attr("width", width + padding * 2)
-    .attr("height", height + padding * 2)
+    .attr("width", mycenter * 2 )
+    .attr("height", height )
   .append("g")
-    .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
+    .attr("transform", "translate(" + [mycenter, radius] + ")");
 
 /*  Viewer instructions. 
  Would prefer that this be two lines, but don't know how to introduce a carriage return, and when I did two appends, the line spacing was too great. When I tried to fix line spacing in the CSS, my text went to left-aligned.  */
