@@ -83,7 +83,7 @@ d3.json(fileJSONdata, function(error, json) {
       // The dy adjustment is how to get the text vertically centered
       .attr("dy", function(d) {
           var multiline = (d.name || "").split(splitChar).length > 1;
-          return multiline ? "-.35em" : ".35em";
+          return multiline ? "-.1em" : ".35em";
       }) 
       .attr("transform", function(d) {
         var multiline = (d.name || "").split(splitChar).length > 1,
